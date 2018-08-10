@@ -3,7 +3,7 @@
 
 int main(){
     int size;
-    printf("Block and key size ? 128, 192, oe 256 bits\n");
+    printf("Block and key sizes ? 128, 192, or 256 bits\n");
     scanf("%d",&size);
 
     switch(size){
