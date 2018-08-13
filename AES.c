@@ -52,5 +52,40 @@ void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
             state[i][j] = copy_state[i][(j+i)%turnSize(size)];
         }
     }
+}
 
+void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8_t key[4][turnSize(size)], const uint8_t SBOX[16][16], const uint8_t RCON[10][4]){
+    // Round Key 0 = Cipher key
+    // Consider keys as colums of 4 elments
+    for (int i=0;i<4;i++){
+        for (int j=0;j<sizeof(keys[0]);j++){
+            keys[i][j]=key[j][i];
+        }
+    }
+
+    //Other roucdkeys
+    for (int l=4;l<11*turnSize(size);l++){
+        //First column of round keys
+        if (l%4 == 0){
+            uint8_t rotWord[4];
+            for (int i=0;i<4;i++){
+                rotWord[i]=keys[l-1][(i+1)%turnSize(size)];
+            }
+            uint8_t subBytesRotWord[4];
+            for (int i=0;i<4;i++){
+                uint8_t b = (rotWord[i]<<4);
+                subBytesRotWord[i]=SBOX[rotWord[i]>>4][b>>4];
+            }
+            for (int i=0;i<4;i++){
+                keys[l][i]=keys[l-4][i] ^ subBytesRotWord[i] ^ RCON[(l-4)/4][i];
+            }
+        }
+
+        // Other Columns
+        else{
+            for (int i=0;i<4;i++){
+                keys[l][i]=keys[l-4][i] ^ keys[l-1][i];
+            }
+        }
+    }
 }
