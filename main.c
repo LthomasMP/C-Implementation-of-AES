@@ -56,18 +56,12 @@ const uint8_t key256[4][8]={
     {0x16, 0xe6, 0x88, 0x3c, 0x90, 0x90, 0x90, 0x90}
 };
 
-// Input text to encrypt
-// uint8_t State128[4][4] = {
-//     {0x32, 0x88, 0x31, 0xe0},
-//     {0x43, 0x5a, 0x31, 0x37},
-//     {0xf6, 0x30, 0x98, 0x07},
-//     {0xf6, 0x8d, 0xa2, 0x34}
-// };
+//Input text to encrypt
 uint8_t State128[4][4] = {
-    {0x19, 0xa0, 0x9a, 0xe9},
-    {0x3d, 0xf4, 0xc6, 0xf8},
-    {0xe3, 0xe2, 0x8d, 0x48},
-    {0xbe, 0x2b, 0x2a, 0x08}
+    {0x32, 0x88, 0x31, 0xe0},
+    {0x43, 0x5a, 0x31, 0x37},
+    {0xf6, 0x30, 0x98, 0x07},
+    {0xf6, 0x8d, 0xa2, 0x34}
 };
 uint8_t State192[4][6] = {
     {0x32, 0x88, 0x31, 0xe0, 0x90, 0x90},
@@ -91,9 +85,19 @@ int main(){
     switch(size){
         case 128:
             printf("Encryption...\n");
+            // Calculate keys
             keySchedule(size, keys, key128, SBOX, RCON);
-            //subBytes(size,State128,SBOX);
-            //shiftRows(size, State128);
+
+            // Initial Round
+            addRounkKey(size,State128,keys,0);
+            printState(size,State128);
+
+            // Begining of rounds
+            subBytes(size,State128,SBOX);
+            printState(size,State128);
+            shiftRows(size, State128);
+            printState(size,State128);
+
             break;
         case 192:
             printf("192 Not implemented yet :(\n");
