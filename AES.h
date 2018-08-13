@@ -1,6 +1,6 @@
-void subBytes(int **state, int size, int **SBOX);
-void shiftRows(int **state, int size);
-void mixColumns(int **state, int size);
-void addRoundKey(int **state, int size, int ***key);
+#include <stdint.h>
 
-void keySchedule(int ***key, int size, int **SBOX, int **RCON);
+int turnSize(const int size);
+void printState(int size, uint8_t state[4][turnSize(size)]);
+void subBytes(const int size, uint8_t state[4][turnSize(size)], const uint8_t SBOX[16][16]);
+void shiftRows(const int size, uint8_t state[4][turnSize(size)]);
