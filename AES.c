@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include "AES.h"
 
+#define xtime(x)   ((x<<1) ^ (((x>>7) & 1) * 0x1b))
+
 int turnSize(const int size){
     switch (size){
         case 128:
@@ -51,6 +53,19 @@ void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
         for (int j=0;j<(int)sizeof(state[0]);j++){
             state[i][j] = copy_state[i][(j+i)%turnSize(size)];
         }
+    }
+}
+
+void mixColumns(const int size, uint8_t state[4][turnSize(size)]){
+    int i;
+    unsigned char Tmp,Tm,t;
+    for(i = 0; i < 4; i++) {
+        t = state[0][i];
+        Tmp = state[0][i] ^ state[1][i] ^ state[2][i] ^ state[3][i] ;
+        Tm = state[0][i] ^ state[1][i] ; Tm = xtime(Tm); state[0][i] ^= Tm ^ Tmp ;
+        Tm = state[1][i] ^ state[2][i] ; Tm = xtime(Tm); state[1][i] ^= Tm ^ Tmp ;
+        Tm = state[2][i] ^ state[3][i] ; Tm = xtime(Tm); state[2][i] ^= Tm ^ Tmp ;
+        Tm = state[3][i] ^ t ; Tm = xtime(Tm); state[3][i] ^= Tm ^ Tmp ;
     }
 }
 

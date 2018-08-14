@@ -61,7 +61,7 @@ uint8_t State128[4][4] = {
     {0x32, 0x88, 0x31, 0xe0},
     {0x43, 0x5a, 0x31, 0x37},
     {0xf6, 0x30, 0x98, 0x07},
-    {0xf6, 0x8d, 0xa2, 0x34}
+    {0xa8, 0x8d, 0xa2, 0x34}
 };
 uint8_t State192[4][6] = {
     {0x32, 0x88, 0x31, 0xe0, 0x90, 0x90},
@@ -84,18 +84,26 @@ int main(){
 
     switch(size){
         case 128:
-            printf("Encryption...\n");
+            printf("Text to encrpyt:\n");
+            printState(size,State128);  
+            printf("Encryption...\n\n");
+
             // Calculate keys
             keySchedule(size, keys, key128, SBOX, RCON);
 
             // Initial Round
             addRounkKey(size,State128,keys,0);
-            printState(size,State128);
 
-            // Begining of rounds
-            subBytes(size,State128,SBOX);
-            printState(size,State128);
-            shiftRows(size, State128);
+            for (int i=1;i<11;i++){
+                subBytes(size,State128,SBOX);
+                shiftRows(size,State128);
+                if(i<10){
+                    mixColumns(size,State128);
+                }
+                addRounkKey(size,State128,keys,i);
+            }
+
+            printf("Cipher text:\n\n");
             printState(size,State128);
 
             break;
