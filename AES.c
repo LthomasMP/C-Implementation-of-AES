@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include "AES.h"
 
 #define xtime(x)   ((x<<1) ^ (((x>>7) & 1) * 0x1b))
@@ -32,6 +33,28 @@ void printState(int size, uint8_t state[4][turnSize(size)]){
     printf("\n");
 }
 
+void stateFromFile(const int size, uint8_t state[4][turnSize(size)], char* file_name){
+    FILE* f;
+    char str[size];
+    f = fopen(file_name, "r");
+    if(f == NULL){
+        perror("Error opening file\n");
+    }
+    if (fgets(str,size,f) != NULL){
+        int l=0;
+        for (int i=0;i<4;i++){
+            for (int j=0;j<turnSize(size);j++){
+                if(str[i] != '\0'){
+                    state[i][j] = str[l];
+                    l++;
+                }
+            } 
+        }
+    }
+    fclose(f);
+}
+
+
 void subBytes(const int size, uint8_t state[4][turnSize(size)], const uint8_t SBOX[16][16]){
     for (int i=0;i<4;i++){
         for (int j=0;j<(int)sizeof(state[0]);j++){
@@ -58,6 +81,7 @@ void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
 
 void mixColumns(const int size, uint8_t state[4][turnSize(size)]){
     int i;
+    // Multiplication in Gallois field
     unsigned char Tmp,Tm,t;
     for(i = 0; i < turnSize(size); i++) {
         t = state[0][i];
@@ -112,3 +136,20 @@ void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8
         }
     }
 }
+
+void createCipherFile(const int size, uint8_t state[4][turnSize(size)], const char* cipher_file){
+    // Create cipher.txt
+    system("touch cipher.txt");
+
+    // Put in cipher.txt content of cipherState
+    FILE* f = fopen(cipher_file,"w");
+    if (f != NULL){
+        for (int i=0;i<4;i++){
+            for (int j=0;j<turnSize(size);j++){
+                fprintf(f,"%x",state[i][j]);
+            }
+        }
+    }
+    fclose(f);
+}
+

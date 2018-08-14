@@ -76,17 +76,23 @@ uint8_t State256[4][8] = {
     {0xa8, 0x8d, 0xa2, 0x34, 0x90, 0x90, 0x90, 0x90}
 };
 
-int main(){
+int main(int argc, char **argv){
     const int size;
+    if(argc == 1){
+        printf("Error. Ussage: ./AES file_name.txt\n");
+        return (-1);
+    }
+    char* file_name = argv[1];
     printf("Block and key sizes ? 128, 192, or 256 bits\n");
     scanf("%d",&size);
     uint8_t keys[turnSize(size)*11][4];
 
+    const char* cipher_file="cipher.txt";
+
     switch(size){
         case 128:
-            printf("Text to encrpyt:\n\n");
-            printState(size,State128);  
-            printf("Encryption...\n\n");
+            stateFromFile(size,State128,file_name);
+            printf("Encryption of your file content...\n\n");
 
             // Calculate keys
             keySchedule(size, keys, key128, SBOX, RCON);
@@ -105,12 +111,13 @@ int main(){
 
             printf("Cipher text:\n\n");
             printState(size,State128);
+            createCipherFile(size,State128, cipher_file);
+            printf("Encrypted in %s\n",cipher_file);
 
             break;
         case 192:
-            printf("Text to encrpyt:\n\n");
-            printState(size,State192);  
-            printf("Encryption...\n\n");
+            stateFromFile(size,State192,file_name);
+            printf("Encryption of your file content...\n\n");
 
             // Calculate keys
             keySchedule(size, keys, key192, SBOX, RCON);
@@ -129,11 +136,13 @@ int main(){
 
             printf("Cipher text:\n\n");
             printState(size,State192);
+            createCipherFile(size,State192,cipher_file);
+            printf("Encrypted in %s\n",cipher_file);
+
             break;
         case 256:
-            printf("Text to encrpyt:\n\n");
-            printState(size,State256);  
-            printf("Encryption...\n\n");
+            stateFromFile(size,State256,file_name);
+            printf("Encryption of you file content...\n\n");
 
             // Calculate keys
             keySchedule(size, keys, key256, SBOX, RCON);
@@ -152,8 +161,10 @@ int main(){
 
             printf("Cipher text:\n\n");
             printState(size,State256);
+            createCipherFile(size,State256,cipher_file);
+            printf("Encrypted in %s\n",cipher_file);
+
             break;
     }
-
     return 0;
 }

@@ -2,4 +2,4 @@
 
 make clean
 make
-./AES
+./AES text.txt
