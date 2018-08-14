@@ -92,7 +92,8 @@ int main(int argc, char **argv){
     switch(size){
         case 128:
             stateFromFile(size,State128,file_name);
-            printf("Encryption of your file content...\n\n");
+            printf("Encryption of your file content...\n");
+            printState(size,State128);
 
             // Calculate keys
             keySchedule(size, keys, key128, SBOX, RCON);
@@ -117,7 +118,8 @@ int main(int argc, char **argv){
             break;
         case 192:
             stateFromFile(size,State192,file_name);
-            printf("Encryption of your file content...\n\n");
+            printf("Encryption of your file content...\n");
+            printState(size,State192);
 
             // Calculate keys
             keySchedule(size, keys, key192, SBOX, RCON);
@@ -142,7 +144,8 @@ int main(int argc, char **argv){
             break;
         case 256:
             stateFromFile(size,State256,file_name);
-            printf("Encryption of you file content...\n\n");
+            printf("Encryption of you file content...\n");
+            printState(size,State256);
 
             // Calculate keys
             keySchedule(size, keys, key256, SBOX, RCON);
