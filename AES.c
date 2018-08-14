@@ -59,7 +59,7 @@ void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
 void mixColumns(const int size, uint8_t state[4][turnSize(size)]){
     int i;
     unsigned char Tmp,Tm,t;
-    for(i = 0; i < 4; i++) {
+    for(i = 0; i < turnSize(size); i++) {
         t = state[0][i];
         Tmp = state[0][i] ^ state[1][i] ^ state[2][i] ^ state[3][i] ;
         Tm = state[0][i] ^ state[1][i] ; Tm = xtime(Tm); state[0][i] ^= Tm ^ Tmp ;

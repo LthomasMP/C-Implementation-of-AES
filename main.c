@@ -67,13 +67,13 @@ uint8_t State192[4][6] = {
     {0x32, 0x88, 0x31, 0xe0, 0x90, 0x90},
     {0x43, 0x5a, 0x31, 0x37, 0x90, 0x90},
     {0xf6, 0x30, 0x98, 0x07, 0x90, 0x90},
-    {0xf6, 0x8d, 0xa2, 0x34, 0x90, 0x90}
+    {0xa8, 0x8d, 0xa2, 0x34, 0x90, 0x90}
 };
 uint8_t State256[4][8] = {
     {0x32, 0x88, 0x31, 0xe0, 0x90, 0x90, 0X90, 0x90},
     {0x43, 0x5a, 0x31, 0x37, 0x90, 0x90, 0x90, 0x90},
     {0xf6, 0x30, 0x98, 0x07, 0x90, 0x90, 0x90, 0x90},
-    {0xf6, 0x8d, 0xa2, 0x34, 0x90, 0x90, 0x90, 0x90}
+    {0xa8, 0x8d, 0xa2, 0x34, 0x90, 0x90, 0x90, 0x90}
 };
 
 int main(){
@@ -108,10 +108,50 @@ int main(){
 
             break;
         case 192:
-            printf("192 Not implemented yet :(\n");
+            printf("Text to encrpyt:\n");
+            printState(size,State192);  
+            printf("Encryption...\n\n");
+
+            // Calculate keys
+            keySchedule(size, keys, key192, SBOX, RCON);
+
+            // Initial Round
+            addRounkKey(size,State192,keys,0);
+
+            for (int i=1;i<13;i++){
+                subBytes(size,State192,SBOX);
+                shiftRows(size,State192);
+                if(i<12){
+                    mixColumns(size,State192);
+                }
+                addRounkKey(size,State192,keys,i);
+            }
+
+            printf("Cipher text:\n\n");
+            printState(size,State192);
             break;
         case 256:
-            printf("256 Not implemented yet :(\n");
+            printf("Text to encrpyt:\n");
+            printState(size,State256);  
+            printf("Encryption...\n\n");
+
+            // Calculate keys
+            keySchedule(size, keys, key256, SBOX, RCON);
+
+            // Initial Round
+            addRounkKey(size,State256,keys,0);
+
+            for (int i=1;i<13;i++){
+                subBytes(size,State256,SBOX);
+                shiftRows(size,State256);
+                if(i<12){
+                    mixColumns(size,State256);
+                }
+                addRounkKey(size,State256,keys,i);
+            }
+
+            printf("Cipher text:\n\n");
+            printState(size,State256);
             break;
     }
 
