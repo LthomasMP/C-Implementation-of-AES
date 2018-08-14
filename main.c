@@ -84,7 +84,7 @@ int main(){
 
     switch(size){
         case 128:
-            printf("Text to encrpyt:\n");
+            printf("Text to encrpyt:\n\n");
             printState(size,State128);  
             printf("Encryption...\n\n");
 
@@ -108,7 +108,7 @@ int main(){
 
             break;
         case 192:
-            printf("Text to encrpyt:\n");
+            printf("Text to encrpyt:\n\n");
             printState(size,State192);  
             printf("Encryption...\n\n");
 
@@ -131,7 +131,7 @@ int main(){
             printState(size,State192);
             break;
         case 256:
-            printf("Text to encrpyt:\n");
+            printf("Text to encrpyt:\n\n");
             printState(size,State256);  
             printf("Encryption...\n\n");
 
