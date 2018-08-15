@@ -35,7 +35,8 @@ void printState(int size, uint8_t state[4][turnSize(size)]){
 
 void stateFromFile(const int size, uint8_t state[4][turnSize(size)], char* file_name){
     FILE* f;
-    char str[size];
+    int sizeFile = 10;
+    char* str = (char*)calloc(sizeFile,sizeof(int));
     f = fopen(file_name, "r");
     if(f == NULL){
         perror("Error opening file\n");
@@ -47,6 +48,7 @@ void stateFromFile(const int size, uint8_t state[4][turnSize(size)], char* file_
                 if(str[i] != '\0'){
                     state[i][j] = str[l];
                     l++;
+                    sizeFile++;
                 }
             } 
         }
