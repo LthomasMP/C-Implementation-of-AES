@@ -83,7 +83,9 @@ void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
 
 void mixColumns(const int size, uint8_t state[4][turnSize(size)]){
     int i;
-    // Multiplication in Gallois field
+    /*
+     * Multiplication in Gallois field
+     */ 
     unsigned char Tmp,Tm,t;
     for(i = 0; i < turnSize(size); i++) {
         t = state[0][i];
@@ -104,17 +106,23 @@ void addRounkKey(const int size, uint8_t state[4][turnSize(size)], uint8_t keys[
 }
 
 void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8_t key[4][turnSize(size)], const uint8_t SBOX[16][16], const uint8_t RCON[10][4]){
-    // Round Key 0 = Cipher key
-    // Consider keys as colums of 4 elments
+    /*
+     * Round Key 0 = Cipher key
+     * Consider keys as colums of 4 elments
+     */
     for (int i=0;i<4;i++){
         for (int j=0;j<sizeof(keys[0]);j++){
             keys[i][j]=key[j][i];
         }
     }
 
-    //Other roucdkeys
+    /*
+     * Other roucdkeys
+     */
     for (int l=4;l<11*turnSize(size);l++){
-        //First column of round keys
+        /*
+         * First column of round keys
+         */
         if (l%4 == 0){
             uint8_t rotWord[4];
             for (int i=0;i<4;i++){
@@ -130,7 +138,9 @@ void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8
             }
         }
 
-        // Other Columns
+        /*
+         * Other Columns
+         */
         else{
             for (int i=0;i<4;i++){
                 keys[l][i]=keys[l-4][i] ^ keys[l-1][i];
@@ -140,10 +150,14 @@ void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8
 }
 
 void createCipherFile(const int size, uint8_t state[4][turnSize(size)], const char* cipher_file){
-    // Create cipher.txt
+    /*
+     *  Create cipher.txt
+     */
     system("touch cipher.txt");
 
-    // Put in cipher.txt content of cipherState
+    /* 
+     * Put in cipher.txt content of cipherState
+     */
     FILE* f = fopen(cipher_file,"w");
     if (f != NULL){
         for (int i=0;i<4;i++){

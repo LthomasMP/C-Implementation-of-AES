@@ -4,7 +4,7 @@
 
 
 const uint8_t SBOX[16][16] = {
-  //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
+  /*0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F */
   {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76},
   {0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0},
   {0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15},
@@ -36,7 +36,9 @@ const uint8_t RCON[10][4] = {
     {0x36, 0x00, 0x00, 0x00},             
 };
 
-//Input cypher key
+/*
+ *Input cypher key
+ */
 const uint8_t key128[4][4]={
     {0x2b, 0x28, 0xab, 0x09},
     {0x7e, 0xae, 0xf7, 0xcf},
@@ -56,7 +58,9 @@ const uint8_t key256[4][8]={
     {0x16, 0xe6, 0x88, 0x3c, 0x90, 0x90, 0x90, 0x90}
 };
 
-//Input text to encrypt
+/*
+ * Input text to encrypt
+ */ 
 uint8_t State128[4][4] = {
     {0x32, 0x88, 0x31, 0xe0},
     {0x43, 0x5a, 0x31, 0x37},
@@ -95,10 +99,14 @@ int main(int argc, char **argv){
             printf("Encryption of your file content...\n");
             printState(size,State128);
 
-            // Calculate keys
+            /*
+             * Calculate keys 
+             */
             keySchedule(size, keys, key128, SBOX, RCON);
 
-            // Initial Round
+            /*
+             *Initial round 
+             */
             addRounkKey(size,State128,keys,0);
 
             for (int i=1;i<11;i++){
@@ -121,10 +129,14 @@ int main(int argc, char **argv){
             printf("Encryption of your file content...\n");
             printState(size,State192);
 
-            // Calculate keys
+            /*
+             * Calculate keys 
+             */
             keySchedule(size, keys, key192, SBOX, RCON);
 
-            // Initial Round
+            /*
+             *Initial round 
+             */
             addRounkKey(size,State192,keys,0);
 
             for (int i=1;i<13;i++){
@@ -147,10 +159,14 @@ int main(int argc, char **argv){
             printf("Encryption of you file content...\n");
             printState(size,State256);
 
-            // Calculate keys
+            /*
+             * Calculate keys 
+             */
             keySchedule(size, keys, key256, SBOX, RCON);
 
-            // Initial Round
+            /*
+             *Initial round 
+             */
             addRounkKey(size,State256,keys,0);
 
             for (int i=1;i<13;i++){
