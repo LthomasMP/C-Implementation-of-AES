@@ -21,6 +21,7 @@ int turnSize(const int size){
             printf("Error size");
             break;
     }
+    return 0;
 }
 
 void printState(int size, uint8_t state[4][turnSize(size)]){

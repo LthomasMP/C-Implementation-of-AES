@@ -81,7 +81,7 @@ uint8_t State256[4][8] = {
 };
 
 int main(int argc, char **argv){
-    const int size;
+    int size;
     if(argc == 1){
         printf("Error. Ussage: ./AES file_name.txt\n");
         return (-1);
