@@ -153,7 +153,6 @@ void createCipherFile(int size, uint8_t state[4][turnSize(size)], const char* ci
     /*
      *  Create cipher.txt
      */
-    system("touch cipher.txt");
 
     /* 
      * Put in cipher.txt content of cipherState

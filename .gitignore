@@ -1,4 +1,4 @@
 #ignore compiled files
 *.o
-*.sh
 *.txt
+AES
