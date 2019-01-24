@@ -111,7 +111,7 @@ void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8
      * Consider keys as colums of 4 elments
      */
     for (int i=0;i<4;i++){
-        for (int j=0;j<sizeof(keys[0]);j++){
+        for (int j=0;j<(int)sizeof(keys[0]);j++){
             keys[i][j]=key[j][i];
         }
     }
