@@ -1,16 +1,21 @@
-all: AES
+CC=gcc
+CFLAGS=-Wall -Werror -Wextra
+LDFLAGS=
+EXEC=AES
+
+all: $(EXEC)
 
 AES: AES.o main.o
-	gcc -o AES AES.o main.o
+	$(CC) -o AES main.o $(LDFLAGS)
 
 AES.o: AES.c
-	gcc -o AES.o -c main.c -W -Wall -Wextra -Werror
+	$(CC) -o AES.o -c main.c $(CFLAGS)
 	
 main.o: main.c AES.h
-	gcc -o main.o -c main.c -W -Wall -Wextra -Werror
+	$(CC) -o main.o -c main.c $(CFLAGS)
 
 clean:
 	rm *.o
 
 mrproper:
-	rm AES
+	rm $(EXEC)

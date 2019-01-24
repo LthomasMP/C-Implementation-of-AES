@@ -2,11 +2,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "AES.h"
 
 #define xtime(x)   ((x<<1) ^ (((x>>7) & 1) * 0x1b))
 
-int turnSize(const int size){
+int turnSize(int size){
     switch (size){
         case 128:
             return 4;
@@ -34,7 +33,7 @@ void printState(int size, uint8_t state[4][turnSize(size)]){
     printf("\n");
 }
 
-void stateFromFile(const int size, uint8_t state[4][turnSize(size)], char* file_name){
+void stateFromFile(int size, uint8_t state[4][turnSize(size)], char* file_name){
     FILE* f;
     int sizeFile = 10;
     char* str = (char*)calloc(sizeFile,sizeof(int));
@@ -58,7 +57,7 @@ void stateFromFile(const int size, uint8_t state[4][turnSize(size)], char* file_
 }
 
 
-void subBytes(const int size, uint8_t state[4][turnSize(size)], const uint8_t SBOX[16][16]){
+void subBytes(int size, uint8_t state[4][turnSize(size)], const uint8_t SBOX[16][16]){
     for (int i=0;i<4;i++){
         for (int j=0;j<(int)sizeof(state[0]);j++){
             uint8_t b = (state[i][j]<<4);
@@ -68,7 +67,7 @@ void subBytes(const int size, uint8_t state[4][turnSize(size)], const uint8_t SB
     }
 }
 
-void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
+void shiftRows(int size, uint8_t state[4][turnSize(size)]){
     uint8_t copy_state[4][turnSize(size)];
     for (int i=0;i<4;i++){
         for (int j=0;j<(int)sizeof(state[0]);j++){
@@ -82,7 +81,7 @@ void shiftRows(const int size, uint8_t state[4][turnSize(size)]){
     }
 }
 
-void mixColumns(const int size, uint8_t state[4][turnSize(size)]){
+void mixColumns(int size, uint8_t state[4][turnSize(size)]){
     int i;
     /*
      * Multiplication in Gallois field
@@ -98,7 +97,7 @@ void mixColumns(const int size, uint8_t state[4][turnSize(size)]){
     }
 }
 
-void addRounkKey(const int size, uint8_t state[4][turnSize(size)], uint8_t keys[turnSize(size)*11][4], int round){
+void addRounkKey(int size, uint8_t state[4][turnSize(size)], uint8_t keys[turnSize(size)*11][4], int round){
     for (int i=0;i<4;i++){
         for (int j=0;j<turnSize(size);j++){
             state[i][j] = state[i][j] ^ keys[turnSize(size)*round+j][i];
@@ -106,7 +105,7 @@ void addRounkKey(const int size, uint8_t state[4][turnSize(size)], uint8_t keys[
     }
 }
 
-void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8_t key[4][turnSize(size)], const uint8_t SBOX[16][16], const uint8_t RCON[10][4]){
+void keySchedule(int size, uint8_t keys[turnSize(size)*11][4], const uint8_t key[4][turnSize(size)], const uint8_t SBOX[16][16], const uint8_t RCON[10][4]){
     /*
      * Round Key 0 = Cipher key
      * Consider keys as colums of 4 elments
@@ -150,7 +149,7 @@ void keySchedule(const int size, uint8_t keys[turnSize(size)*11][4], const uint8
     }
 }
 
-void createCipherFile(const int size, uint8_t state[4][turnSize(size)], const char* cipher_file){
+void createCipherFile(int size, uint8_t state[4][turnSize(size)], const char* cipher_file){
     /*
      *  Create cipher.txt
      */
