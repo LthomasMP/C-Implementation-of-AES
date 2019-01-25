@@ -16,5 +16,4 @@ main.o: main.c AES.h
 
 clean:
 	rm *.o
-	rm cipher.txt
 	
